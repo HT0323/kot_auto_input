@@ -35,6 +35,9 @@ require("dotenv").config();
     .selectOption({ label: "休憩終了" });
   await page.fill("#recording_timestamp_time_4", "1300");
 
+  // 打刻登録ボタンをクリック
+  await page.click("#button_01 >> nth=1");
+
   await page.waitForTimeout(1000);
   await page.screenshot({ path: `example.png` });
 
