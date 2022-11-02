@@ -17,82 +17,82 @@ require("dotenv").config();
       startTime: "1000",
       endTime: "1930",
     },
-    "4": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "5": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "6": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "7": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "11": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "12": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "13": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "14": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "17": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "18": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "19": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "20": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "21": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "24": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "25": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "26": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "27": {
-      startTime: "1000",
-      endTime: "1930",
-    },
-    "28": {
-      startTime: "1000",
-      endTime: "1900",
-    },
-    "31": {
-      startTime: "1000",
-      endTime: "1900",
-    },
+    // "4": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "5": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "6": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "7": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "11": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "12": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "13": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "14": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "17": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "18": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "19": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "20": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "21": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "24": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "25": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "26": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "27": {
+    //   startTime: "1000",
+    //   endTime: "1930",
+    // },
+    // "28": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
+    // "31": {
+    //   startTime: "1000",
+    //   endTime: "1900",
+    // },
   };
 
   const browser = await chromium.launch({ headless: false, slowMo: 500 });
@@ -145,7 +145,7 @@ require("dotenv").config();
     await page.click("#button_01 >> nth=1");
   }
 
-  await page.screenshot({ path: `example.png` });
+  await page.screenshot({ path: `result.png`, fullPage: true });
 
   await browser.close();
 })();
