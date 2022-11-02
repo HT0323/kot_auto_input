@@ -1,3 +1,5 @@
+<img align="right" width="159px" src="https://user-images.githubusercontent.com/30143121/199495713-1889f27a-efd5-4a07-aec9-5af8c7921aef.gif">
+
 # kot_auto_input
 
 KOT(KING OF TIME)の勤怠入力を手動で入力するのが煩わしいので自動で勤怠を入力できるようにしました。
