@@ -99,7 +99,7 @@ async function main() {
       // },
     };
 
-    await AutoBrowserOperation(attendance);
+    await AutoBrowserOperation(attendance, envVar);
   } catch (error) {
     console.log(`エラー発生 ${error}`);
   }

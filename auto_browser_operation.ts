@@ -1,19 +1,25 @@
 import { chromium } from "playwright";
 require("dotenv").config();
 
-export async function AutoBrowserOperation(attendance: {
-  [key: string]: {
-    startTime: string;
-    endTime: string;
-  };
-}) {
+export async function AutoBrowserOperation(
+  attendance: {
+    [key: string]: {
+      startTime: string;
+      endTime: string;
+    };
+  },
+  envVar: {
+    kotLoginId: string;
+    kotLoginPassword: string;
+  }
+) {
   const browser = await chromium.launch({ headless: false, slowMo: 500 });
   const page = await browser.newPage();
 
   // KOTのログイン処理
   await page.goto("https://s2.kingtime.jp/admin");
-  await page.fill("#login_id", process.env.KOT_LOGIN_ID || "");
-  await page.fill("#login_password", process.env.KOT_LOGIN_PASSWORD || "");
+  await page.fill("#login_id", envVar.kotLoginId);
+  await page.fill("#login_password", envVar.kotLoginPassword);
   await page.click("#login_button");
 
   for (const property in attendance) {
