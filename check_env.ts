@@ -7,7 +7,6 @@ export const checkEnvVar = (): {
   const kotLoginPassword = process.env.KOT_LOGIN_PASSWORD || "";
 
   if (!(kotLoginId !== "" && kotLoginPassword !== "")) {
-    console.log(kotLoginId, kotLoginPassword);
     throw new Error(
       "undefined KOT_LOGIN_ID & KOT_LOGIN_PASSWORD environment variable"
     );
