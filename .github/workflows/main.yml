@@ -11,7 +11,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install packages
         run: npm ci
-      - name: Prettier Format Check
-        run: npm run format
-      - name: Prettier Formatting
+      - name: Prettier
         run: npm run format:fix

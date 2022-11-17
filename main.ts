@@ -95,6 +95,6 @@ async function main() {
     // },
   };
 
-          await AutoBrowserOperation(attendance);
+       await AutoBrowserOperation(attendance);
 }
 main();
