@@ -16,6 +16,13 @@ export async function AutoBrowserOperation(attendance: {
   await page.fill("#login_password", process.env.KOT_LOGIN_PASSWORD || "");
   await page.click("#login_button");
 
+  // ログインに成功しているか判定
+  if (!(await page.$(".htBlock-header_logoutButton"))) {
+    throw new Error(
+      `KOT Login failed\nlogin_id: ${process.env.KOT_LOGIN_ID}\nlogin_password: ${process.env.KOT_LOGIN_PASSWORD}`
+    );
+  }
+
   for (const property in attendance) {
     // 打刻編集画面への遷移
     await page.click(`.htBlock-selectOther >> nth=${Number(property) - 1}`);
