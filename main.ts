@@ -102,6 +102,7 @@ async function main() {
     await AutoBrowserOperation(attendance, envVar);
   } catch (error) {
     console.log(`エラー発生 ${error}`);
+    process.exit(1);
   }
 }
 main();
