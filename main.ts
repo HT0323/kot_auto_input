@@ -1,8 +1,11 @@
 import { AutoBrowserOperation } from "./auto_browser_operation";
+import { checkEnvVar } from "./check_env";
 require("dotenv").config();
 
 async function main() {
   try {
+    const envVar = checkEnvVar();
+
     // 毎日の勤怠情報を保持する、今は固定値だがCSVファイルから読み込んだ値で作成できるようにする。
     let attendance: {
       /** 日付 */
@@ -96,7 +99,7 @@ async function main() {
       // },
     };
 
-    await AutoBrowserOperation(attendance);
+    await AutoBrowserOperation(attendance, envVar);
   } catch (error) {
     console.log(`エラー発生 ${error}`);
     process.exit(1);
