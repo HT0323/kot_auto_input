@@ -1,4 +1,6 @@
 import { chromium } from "playwright";
+import { selectMenu } from "./type";
+
 require("dotenv").config();
 
 export async function AutoBrowserOperation(
@@ -13,6 +15,14 @@ export async function AutoBrowserOperation(
     kotLoginPassword: string;
   }
 ) {
+  // 勤怠打刻画面のselect情報
+  const selectMenu: selectMenu = {
+    startWork: "1",
+    endWork: "2",
+    startRest: "3",
+    endRest: "4",
+  };
+
   const browser = await chromium.launch({ headless: false, slowMo: 500 });
   const page = await browser.newPage();
 
@@ -36,38 +46,79 @@ export async function AutoBrowserOperation(
       .locator(`select >> nth=${property}`)
       .selectOption({ label: "打刻編集" });
 
-    // 出勤時刻の入力
-    await page
-      .locator("#recording_type_code_1")
-      .selectOption({ label: "出勤" });
-    await page.fill(
-      "#recording_timestamp_time_1",
-      attendance[property].startTime
-    );
+    // 既に勤怠が入力済みの場合
+    if ((await page.$$(".htBlock-checkboxL")).length > 0) {
+      const fame = page.mainFrame();
+      for (let n = 0; n <= 3; n++) {
+        const inputValue = await fame.inputValue(
+          `#recording_type_code >> nth=${n}`
+        );
 
-    // 退勤時刻の入力
-    await page
-      .locator("#recording_type_code_2")
-      .selectOption({ label: "退勤" });
-    await page.fill(
-      "#recording_timestamp_time_2",
-      attendance[property].endTime
-    );
+        // 休憩開始開始、終了時刻は際打刻はしない想定
+        if (
+          inputValue === selectMenu.startRest ||
+          inputValue === selectMenu.endRest
+        )
+          continue;
 
-    // 休憩開始時刻の入力
-    await page
-      .locator("#recording_type_code_3")
-      .selectOption({ label: "休憩開始" });
-    await page.fill("#recording_timestamp_time_3", "1200");
+        // 出勤時刻の入力
+        if (inputValue === selectMenu.startWork) {
+          //入力値をクリア
+          await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
+          await page.fill(
+            `.recording_timestamp_time >> nth=${n}`,
+            attendance[property].startTime
+          );
+        }
 
-    // 休憩終了時刻の入力
-    await page
-      .locator("#recording_type_code_4")
-      .selectOption({ label: "休憩終了" });
-    await page.fill("#recording_timestamp_time_4", "1300");
+        // 退勤時刻の入力
+        if (inputValue === selectMenu.endWork) {
+          //入力値をクリア
+          await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
+          await page.fill(
+            `.recording_timestamp_time >> nth=${n}`,
+            attendance[property].endTime
+          );
+        }
+      }
 
-    // 打刻登録ボタンをクリック
-    await page.click("#button_01 >> nth=1");
+      // 打刻登録ボタンをクリック
+      await page.click("#button_01 >> nth=1");
+    } else {
+      // 新たに勤怠を入力する場合
+      // 出勤時刻の入力
+      await page
+        .locator("#recording_type_code_1")
+        .selectOption({ label: "出勤" });
+      await page.fill(
+        "#recording_timestamp_time_1",
+        attendance[property].startTime
+      );
+
+      // 退勤時刻の入力
+      await page
+        .locator("#recording_type_code_2")
+        .selectOption({ label: "退勤" });
+      await page.fill(
+        "#recording_timestamp_time_2",
+        attendance[property].endTime
+      );
+
+      // 休憩開始時刻の入力
+      await page
+        .locator("#recording_type_code_3")
+        .selectOption({ label: "休憩開始" });
+      await page.fill("#recording_timestamp_time_3", "1200");
+
+      // 休憩終了時刻の入力
+      await page
+        .locator("#recording_type_code_4")
+        .selectOption({ label: "休憩終了" });
+      await page.fill("#recording_timestamp_time_4", "1300");
+
+      // 打刻登録ボタンをクリック
+      await page.click("#button_01 >> nth=1");
+    }
   }
 
   await page.screenshot({ path: `result.png`, fullPage: true });
