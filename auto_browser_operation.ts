@@ -45,20 +45,20 @@ export async function AutoBrowserOperation(
       .locator(`.start_end_timerecord >> nth=${Number(property) * 2 + 1}`)
       .innerText()
       .then((value) => {
-        return value.replace("編 ", "").replace(":", "");
+        return value.replace("編 ", "").replace(":", "").trim();
       });
     // 入力済みの退勤時刻を取得
     const displayStartWorkTime: string = await page
       .locator(`.start_end_timerecord >> nth=${Number(property) * 2}`)
       .innerText()
       .then((value) => {
-        return value.replace("編 ", "").replace(":", "");
+        return value.replace("編 ", "").replace(":", "").trim();
       });
 
     const matchStartWorkTime =
-      displayStartWorkTime.trim() === attendance[property].startTime.trim();
+      displayStartWorkTime === attendance[property].startTime;
     const matchEndWorkTime =
-      displayEndWorkTime.trim() === attendance[property].endTime.trim();
+      displayEndWorkTime === attendance[property].endTime;
 
     // 出勤時刻、退勤時刻がCSVと一致した場合は打刻編集画面への遷移は不要
     if (matchStartWorkTime && matchEndWorkTime) continue;
