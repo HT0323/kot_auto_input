@@ -40,6 +40,29 @@ export async function AutoBrowserOperation(
   }
 
   for (const property in attendance) {
+    // 入力済みの出勤時刻を取得
+    const displayEndWorkTime: string = await page
+      .locator(`.start_end_timerecord >> nth=${Number(property) * 2 + 1}`)
+      .innerText()
+      .then((value) => {
+        return value.replace("編 ", "").replace(":", "");
+      });
+    // 入力済みの退勤時刻を取得
+    const displayStartWorkTime: string = await page
+      .locator(`.start_end_timerecord >> nth=${Number(property) * 2}`)
+      .innerText()
+      .then((value) => {
+        return value.replace("編 ", "").replace(":", "");
+      });
+
+    const matchStartWorkTime =
+      displayStartWorkTime.trim() === attendance[property].startTime.trim();
+    const matchEndWorkTime =
+      displayEndWorkTime.trim() === attendance[property].endTime.trim();
+
+    // 出勤時刻、退勤時刻がCSVと一致した場合は打刻編集画面への遷移は不要
+    if (matchStartWorkTime && matchEndWorkTime) continue;
+
     // 打刻編集画面への遷移
     await page.click(`.htBlock-selectOther >> nth=${Number(property) - 1}`);
     await page
@@ -63,22 +86,28 @@ export async function AutoBrowserOperation(
 
         // 出勤時刻の入力
         if (inputValue === selectMenu.startWork) {
-          //入力値をクリア
-          await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
-          await page.fill(
-            `.recording_timestamp_time >> nth=${n}`,
-            attendance[property].startTime
-          );
+          // 入力済みの出勤時刻とCSVの出勤時刻が一致しない場合再入力
+          if (!matchStartWorkTime) {
+            //入力値をクリア
+            await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
+            await page.fill(
+              `.recording_timestamp_time >> nth=${n}`,
+              attendance[property].startTime
+            );
+          }
         }
 
         // 退勤時刻の入力
         if (inputValue === selectMenu.endWork) {
-          //入力値をクリア
-          await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
-          await page.fill(
-            `.recording_timestamp_time >> nth=${n}`,
-            attendance[property].endTime
-          );
+          // 入力済みの退勤時刻とCSVの退勤時刻が一致しない場合再入力
+          if (!matchEndWorkTime) {
+            //入力値をクリア
+            await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
+            await page.fill(
+              `.recording_timestamp_time >> nth=${n}`,
+              attendance[property].endTime
+            );
+          }
         }
       }
 
