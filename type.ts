@@ -1,4 +1,4 @@
-// CSVファイルを読み込んだ際の情報
+/** CSVファイルを読み込んだ際の情報*/
 export type csvFormat = {
   日付: string;
   "(曜日)": string;
@@ -9,13 +9,25 @@ export type csvFormat = {
   作業内容: string;
 }[];
 
-// 1日あたりの出勤時間情報
+/** 1日あたりの出勤時間情報*/
 export type csvInputDay = {
   startTime: string;
   endTime: string;
 };
 
-// 1ヶ月あたりの出勤時間情報
+/** 1ヶ月あたりの出勤時間情報*/
 export type csvInputMonth = {
   [key: string]: csvInputDay;
+};
+
+/** 勤怠入力画面のselect情報*/
+export type selectMenu = {
+  /** 出勤*/
+  readonly startWork: string; //
+  /** 退勤*/
+  readonly endWork: string; //
+  /** 休憩開始*/
+  readonly startRest: string; //
+  /** 休憩終了*/
+  readonly endRest: string; //
 };
