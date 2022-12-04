@@ -31,3 +31,9 @@ export type selectMenu = {
   /** 休憩終了*/
   readonly endRest: string; //
 };
+
+/** KOTログイン情報*/
+export type kotAccountInfo = {
+  readonly kotLoginId: string;
+  readonly kotLoginPassword: string;
+};
