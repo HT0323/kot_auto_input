@@ -6,7 +6,15 @@ require("dotenv").config();
 async function main() {
   try {
     const envVar = checkEnvVar();
-    const forametedAttendance = csvParse("sample.csv");
+    // 当月の最終日を指定
+    const jstDate = new Date();
+    const lastDate = new Date(
+      jstDate.getFullYear(),
+      jstDate.getMonth() + 1,
+      0
+    ).getDate();
+    const forametedAttendance = csvParse("sample.csv", lastDate);
+    console.log(forametedAttendance);
 
     await AutoBrowserOperation(forametedAttendance, envVar);
   } catch (error) {

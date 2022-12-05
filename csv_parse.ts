@@ -2,15 +2,7 @@ import { readFileSync } from "fs";
 import { parse } from "csv-parse/sync";
 import { csvFormat, csvInputDay, csvInputMonth } from "./type";
 
-export const csvParse = (fileName: string): csvInputMonth => {
-  // 当月の最終日を指定
-  const jstDate = new Date();
-  const lastDate = new Date(
-    jstDate.getFullYear(),
-    jstDate.getMonth() + 1,
-    0
-  ).getDate();
-
+export const csvParse = (fileName: string, lastDate: number): csvInputMonth => {
   // CSVファイルのパース開始行を指定
   const startLine = 8;
 
