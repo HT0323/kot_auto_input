@@ -1,19 +1,11 @@
 import { chromium } from "playwright";
-import { selectMenu } from "./type";
+import { csvInputMonth, kotAccountInfo, selectMenu } from "./type";
 
 require("dotenv").config();
 
 export async function AutoBrowserOperation(
-  attendance: {
-    [key: string]: {
-      startTime: string;
-      endTime: string;
-    };
-  },
-  envVar: {
-    kotLoginId: string;
-    kotLoginPassword: string;
-  }
+  attendance: csvInputMonth,
+  envVar: kotAccountInfo
 ) {
   // 勤怠打刻画面のselect情報
   const selectMenu: selectMenu = {

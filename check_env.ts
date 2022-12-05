@@ -1,8 +1,7 @@
+import { kotAccountInfo } from "./type";
+
 /** 環境変数を未定義かチェックする*/
-export const checkEnvVar = (): {
-  kotLoginId: string;
-  kotLoginPassword: string;
-} => {
+export const checkEnvVar = (): kotAccountInfo => {
   const kotLoginId = process.env.KOT_LOGIN_ID || "";
   const kotLoginPassword = process.env.KOT_LOGIN_PASSWORD || "";
 
