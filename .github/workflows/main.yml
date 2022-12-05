@@ -1,4 +1,4 @@
-name: Pretter
+name: Prettier And Test
 
 on:
   pull_request:
@@ -13,6 +13,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - name: Run Test
+        run: |
+          npm ci
+          npm run test
       - name: Run Prettier
         run: |
           npm ci
