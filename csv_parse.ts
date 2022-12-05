@@ -3,7 +3,6 @@ import { parse } from "csv-parse/sync";
 import { csvFormat, csvInputDay, csvInputMonth } from "./type";
 
 export const csvParse = (fileName: string, lastDate: number): csvInputMonth => {
-
   // CSVファイルのパース開始行を指定
   const startLine = 8;
 
