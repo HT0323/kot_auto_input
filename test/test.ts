@@ -4,7 +4,7 @@ import { csvParse } from "../csv_parse";
 
 describe('【テストタイトル】csvParse関数を見るよ', () => {
     it('【テスト内容】本当にCSVファイル内の月末日までの勤怠情報を返す？', () => {
-        assert.equal(csvParse("test/normal.csv", 31), {
+        assert.deepEqual(csvParse("test/normal.csv", 31), {
           '3': { startTime: '1000', endTime: '1930' },
           '4': { startTime: '1000', endTime: '1930' },
           '5': { startTime: '1000', endTime: '1930' },
