@@ -32,3 +32,6 @@ npm install
 ```bash
 npx ts-node main.ts
 ```
+
+# License
+MIT
