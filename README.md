@@ -1,6 +1,5 @@
 [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/HT0323/kot_auto_input)
-[![Pretter](https://github.com/HT0323/kot_auto_input/actions/workflows/main.yml/badge.svg)](https://github.com/HT0323/kot_auto_input/actions/workflows/main.yml)
-
+[![Prettier And Test](https://github.com/HT0323/kot_auto_input/actions/workflows/main.yml/badge.svg)](https://github.com/HT0323/kot_auto_input/actions/workflows/main.yml)
 
 
 
