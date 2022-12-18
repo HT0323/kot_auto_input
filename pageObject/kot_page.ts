@@ -1,7 +1,7 @@
 import { Frame, Locator, Page } from "@playwright/test";
 import { kotAccountInfo } from "../type";
 
-export class TodoPage {
+export class KotPage {
   readonly page: Page;
   readonly frame: Frame;
   readonly loginIdArea: Locator;
@@ -15,13 +15,13 @@ export class TodoPage {
   readonly recordingRegister: Locator;
   readonly startWorkArea: Locator;
   readonly startWorkTimeArea: Locator;
-
   readonly endWorkArea: Locator;
   readonly endWorkTimeArea: Locator;
   readonly startResetArea: Locator;
   readonly startResetTimeArea: Locator;
   readonly endResetArea: Locator;
   readonly endResetTimeArea: Locator;
+  readonly inputtedArea: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -43,27 +43,28 @@ export class TodoPage {
     this.startResetTimeArea = page.locator("#recording_timestamp_time_3");
     this.endResetArea = page.locator("#recording_type_code_4");
     this.endResetTimeArea = page.locator("#recording_timestamp_time_4");
+    this.inputtedArea = page.locator(".htBlock-checkboxL");
   }
 
-  // 対象のページへ遷移
+  /** 対象のページへ遷移 */
   async goto() {
     await this.page.goto("https://s2.kingtime.jp/admin");
   }
 
-  // ログイン
+  /** ログイン */
   async login(envVar: kotAccountInfo) {
     await this.loginIdArea.fill(envVar.kotLoginId);
     await this.loginPasswordArea.fill(envVar.kotLoginPassword);
     await this.loginButton.click();
   }
 
-  // ログインチェック
-  async loginCheck(envVar: kotAccountInfo): Promise<boolean> {
+  /** ログインチェック */
+  async loginCheck(): Promise<boolean> {
     const innerTexts = await this.logoutButton.allInnerTexts();
     return !!innerTexts.length;
   }
 
-  // 勤務開始時刻の取得
+  /** 勤務開始時刻の取得 */
   async getStartWorkTime(day: string): Promise<string> {
     const displayEndWorkTime: string = await this.startEndWorkTime
       .nth(Number(day) * 2 + 1)
@@ -74,7 +75,7 @@ export class TodoPage {
     return displayEndWorkTime;
   }
 
-  // 勤務終了時刻の取得
+  /** 勤務終了時刻の取得 */
   async getEndWorkTime(day: string): Promise<string> {
     const displayEndWorkTime: string = await this.startEndWorkTime
       .nth(Number(day) * 2)
@@ -85,7 +86,7 @@ export class TodoPage {
     return displayEndWorkTime;
   }
 
-  // 打刻編集画面に遷移
+  /** 打刻編集画面に遷移 */
   async moveEditEngraving(day: string) {
     await this.selectMenu.nth(Number(day) - 1).click();
     await this.page
@@ -93,7 +94,7 @@ export class TodoPage {
       .selectOption({ label: "打刻編集" });
   }
 
-  // セレクトの選択されている値を取得
+  /** セレクトの選択されている値を取得 */
   async getSelectInput(selectMenuIndex: number): Promise<string> {
     const inputValue = await this.recordingType
       .nth(selectMenuIndex)
@@ -101,39 +102,45 @@ export class TodoPage {
     return inputValue;
   }
 
-  // 出勤、退勤時刻を再入力
+  /** 出勤、退勤時刻を再入力 */
   async reInputStartEndWorkTime(selectMenuIndex: number, workTime: string) {
     //入力値をクリア
     this.recordingTimeStamp.nth(selectMenuIndex).fill("");
     this.recordingTimeStamp.nth(selectMenuIndex).fill(workTime);
   }
 
-  // 打刻登録
+  /** 打刻登録 */
   async clickRecordingRegister() {
     await this.recordingRegister.click();
   }
 
-  // 出勤時刻の入力
+  /** 新規で出勤時刻の入力 */
   async inputStartWorkTime(workTime: string) {
     await this.startWorkArea.selectOption({ label: "出勤" });
     await this.startWorkTimeArea.fill(workTime);
   }
 
-  // 退勤時刻の入力
+  /** 新規で退勤時刻の入力 */
   async inputEndWorkTime(workTime: string) {
     await this.endWorkArea.selectOption({ label: "退勤" });
     await this.endWorkTimeArea.fill(workTime);
   }
 
-  // 休憩開始時刻の入力
+  /** 新規で休憩開始時刻の入力 */
   async inputStartRestTime() {
     await this.startResetArea.selectOption({ label: "休憩開始" });
     await this.startResetTimeArea.fill("1200");
   }
 
-  // 休憩終了時刻の入力
+  /** 新規で休憩終了時刻の入力 */
   async inputEndResetTime() {
     await this.endResetArea.selectOption({ label: "休憩終了" });
     await this.endResetTimeArea.fill("1300");
+  }
+
+  /**　打刻削除ボタンが存在するかチェック */
+  async deleteEngravingButtonCheck(): Promise<number> {
+    const existInputtedArea = await this.inputtedArea.count();
+    return existInputtedArea;
   }
 }
