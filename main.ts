@@ -38,7 +38,6 @@ async function main() {
       0
     ).getDate();
     const forametedAttendance = csvParse("sample.csv", lastDate);
-    console.log(forametedAttendance);
 
     await AutoBrowserOperation(forametedAttendance, envVar);
   } catch (error) {
