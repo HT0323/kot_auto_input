@@ -7,13 +7,27 @@
 
 #  AUTO KING OF TIME
 
-Do you want to do something about the double management of attendance reports?<br>
-If your attendance management tool is KING OF TIME, this tool may be the solution.
+You don't want to manage double attendance management, do you? <br>
+If your company's attendance management tool is "KING OF TIME", you may be able to solve it with this tool. <br>
 
-勤怠報告書の二重管理を何とかしたいと思いませんか？<br>
-勤怠管理ツールが「KING OF TIME」なら、このツールで解決できるかもしれません。<br>
+---
+
+勤怠管理を二重に管理をしていないでしょうか？ <br>
+あなたの会社の勤怠管理ツールが「KING OF TIME」なら、このツールで解決できるかもしれません。 <br>
 
 # Description
+
+Reports that require daily, weekly and monthly input. <br>
+
+common for SES engineers <br>
+In many cases, there are separate attendance management methods for the site and the company <br>
+In addition, there may even be separate submission methods. <br>
+
+Such trivial problems in the company <br>
+I am creating this tool in the hope that it will be of some help. <br>
+
+---
+
 毎日、毎週、毎月入力が必要な報告書。<br>
 
 SESエンジニアにとってはよくある<br>
@@ -25,12 +39,14 @@ SESエンジニアにとってはよくある<br>
 
 # Demo
 
+[デモ動画](https://user-images.githubusercontent.com/30143121/209460736-1133db27-6d16-454b-ab06-88582105efb3.mp4
+)
 
 # Requirement
 
-▶︎　Node.js
-▶︎　Playwright
-▶︎　Mocha
+▶︎　Node.js<br>
+▶︎　Playwright<br>
+▶︎　Mocha<br>
 
 # Setup
 
