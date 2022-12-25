@@ -39,7 +39,7 @@ SESエンジニアにとってはよくある<br>
 
 # Demo
 
-[デモ動画](https://user-images.githubusercontent.com/30143121/209460736-1133db27-6d16-454b-ab06-88582105efb3.mp4
+[Demonstration video](https://user-images.githubusercontent.com/30143121/209460736-1133db27-6d16-454b-ab06-88582105efb3.mp4
 )
 
 # Requirement
@@ -50,18 +50,57 @@ SESエンジニアにとってはよくある<br>
 
 # Setup
 
-1. git clone 後にモジュールをインストール
+The following procedure summarizes the preparations and preparations in advance<br>
+
+1. Move this repository to your preferred working directory and git clone
+
+2. Install modules to run the cloned code
+
+``` bash
+npm install
+```
+
+3. Create a `.env` file with the information necessary for your login with 'KING OF TIME' and set environment variables
+
+   3-1. Copy `.env.example` to create `.env` file
+
+   3-2. Add your 'KING OF TIME' login account information to `KOT_LOGIN_ID` and `KOT_LOGIN_PASSWORD` in the copied `.env` file
+
+4. Output the separately managed attendance management file (a file containing attendance hours etc. outside the company) in CSV format <br>
+   *If the format of your attendance report and the format do not match, there are examples on the `Wiki` tab in this GitHub, so please use that.
+
+5. If you can match the format, change the CSV file name to `sample.csv`
+
+6. Place the CSV file of 5. directly under the cloned PJ (directly under the `kot_auto_input` directory)
+
+Now that the preparations have been completed, please proceed with the `Usage` item. <br>
+
+---
+
+事前に準備、用意する内容を以下の手順でまとめました <br>
+
+1. このリポジトリをあなたの好きな作業ディレクトリに移動した後 `git clone` します
+
+2. クローンしたコードを動かすためのモジュールをインストールします
 
 ```bash
 npm install
 ```
 
-2. 環境変数の設定
+3. 'KING OF TIME'でご自身のログインに必要な情報を `.env` ファイルを作成後、環境変数を設定します
 
-   `.env.example` をコピーし `.env` ファイルを作成する。
+    3-1. `.env.example` をコピーして `.env` ファイルを作成します
 
-   コピーした `.env` ファイルの `KOT_LOGIN_ID` , `KOT_LOGIN_PASSWORD` に自身の `KOT` のログインアカウント情報を加える。
+    3-2. コピーした `.env` ファイルの `KOT_LOGIN_ID` , `KOT_LOGIN_PASSWORD` に自身の 'KING OF TIME' のログインアカウント情報を加えます
 
+4. 別で管理している勤怠管理のファイル(自社以外で出勤時間などを記入しているファイル)をCSV形式で出力します <br>
+  ※もし、お手持ちの勤怠報告書とフォーマットが大きくずれて合わない場合には、このGitHub内の`Wiki`タブに例を載せていますのでそちらをご使用ください
+
+5. フォーマットを合わせることができましたら、CSVのファイル名を `sample.csv` に変更してください
+
+6. 5.のCSVファイルをクローンしたPJ直下(`kot_auto_input`ディレクトリ直下)に配置してください
+
+以上で事前に準備する内容は完了ですので `Usage` の項目を実施してください。 <br>
 # Usage
 
 ```bash
