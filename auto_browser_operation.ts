@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import { KotPage } from "./pageObject/kot_page";
 import { csvInputMonth, kotAccountInfo, selectMenu } from "./type";
 
 require("dotenv").config();
@@ -17,35 +18,28 @@ export async function AutoBrowserOperation(
 
   const browser = await chromium.launch({ headless: false, slowMo: 500 });
   const page = await browser.newPage();
+  const kotPage = new KotPage(page);
+
+  // 画面遷移
+  await kotPage.goto();
 
   // KOTのログイン処理
-  await page.goto("https://s2.kingtime.jp/admin");
-  await page.fill("#login_id", envVar.kotLoginId);
-  await page.fill("#login_password", envVar.kotLoginPassword);
-  await page.click("#login_button");
+  await kotPage.login(envVar);
 
   // ログインに成功しているか判定
-  if (!(await page.$(".htBlock-header_logoutButton"))) {
+  const isLogin = await kotPage.loginCheck();
+  if (!isLogin) {
     throw new Error(
-      `KOT Login failed\nlogin_id: ${process.env.KOT_LOGIN_ID}\nlogin_password: ${process.env.KOT_LOGIN_PASSWORD}`
+      `KOT Login failed\nlogin_id: ${envVar.kotLoginId}\nlogin_password: ${envVar.kotLoginPassword}`
     );
   }
 
   for (const property in attendance) {
     // 入力済みの出勤時刻を取得
-    const displayEndWorkTime: string = await page
-      .locator(`.start_end_timerecord >> nth=${Number(property) * 2 + 1}`)
-      .innerText()
-      .then((value) => {
-        return value.replace("編 ", "").replace(":", "").trim();
-      });
+    const displayEndWorkTime: string = await kotPage.getStartWorkTime(property);
+
     // 入力済みの退勤時刻を取得
-    const displayStartWorkTime: string = await page
-      .locator(`.start_end_timerecord >> nth=${Number(property) * 2}`)
-      .innerText()
-      .then((value) => {
-        return value.replace("編 ", "").replace(":", "").trim();
-      });
+    const displayStartWorkTime: string = await kotPage.getEndWorkTime(property);
 
     const matchStartWorkTime =
       displayStartWorkTime === attendance[property].startTime;
@@ -56,18 +50,15 @@ export async function AutoBrowserOperation(
     if (matchStartWorkTime && matchEndWorkTime) continue;
 
     // 打刻編集画面への遷移
-    await page.click(`.htBlock-selectOther >> nth=${Number(property) - 1}`);
-    await page
-      .locator(`select >> nth=${property}`)
-      .selectOption({ label: "打刻編集" });
+    await kotPage.moveEditEngraving(property);
 
-    // 既に勤怠が入力済みの場合
-    if ((await page.$$(".htBlock-checkboxL")).length > 0) {
-      const fame = page.mainFrame();
+    // 打刻削除ボタンが存在するかチェック
+    const isDeleteEngravingButton = await kotPage.deleteEngravingButtonCheck();
+
+    // 既に勤怠が入力済みの場合(打刻削除ボタンが存在する)
+    if (isDeleteEngravingButton) {
       for (let n = 0; n <= 3; n++) {
-        const inputValue = await fame.inputValue(
-          `#recording_type_code >> nth=${n}`
-        );
+        const inputValue = await kotPage.getSelectInput(n);
 
         // 休憩開始開始、終了時刻は際打刻はしない想定
         if (
@@ -80,10 +71,8 @@ export async function AutoBrowserOperation(
         if (inputValue === selectMenu.startWork) {
           // 入力済みの出勤時刻とCSVの出勤時刻が一致しない場合再入力
           if (!matchStartWorkTime) {
-            //入力値をクリア
-            await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
-            await page.fill(
-              `.recording_timestamp_time >> nth=${n}`,
+            await kotPage.reInputStartEndWorkTime(
+              n,
               attendance[property].startTime
             );
           }
@@ -93,10 +82,8 @@ export async function AutoBrowserOperation(
         if (inputValue === selectMenu.endWork) {
           // 入力済みの退勤時刻とCSVの退勤時刻が一致しない場合再入力
           if (!matchEndWorkTime) {
-            //入力値をクリア
-            await page.fill(`.recording_timestamp_time >> nth=${n}`, "");
-            await page.fill(
-              `.recording_timestamp_time >> nth=${n}`,
+            await kotPage.reInputStartEndWorkTime(
+              n,
               attendance[property].endTime
             );
           }
@@ -104,45 +91,26 @@ export async function AutoBrowserOperation(
       }
 
       // 打刻登録ボタンをクリック
-      await page.click("#button_01 >> nth=1");
+      await kotPage.clickRecordingRegister();
     } else {
       // 新たに勤怠を入力する場合
       // 出勤時刻の入力
-      await page
-        .locator("#recording_type_code_1")
-        .selectOption({ label: "出勤" });
-      await page.fill(
-        "#recording_timestamp_time_1",
-        attendance[property].startTime
-      );
+      await kotPage.inputStartWorkTime(attendance[property].startTime);
 
       // 退勤時刻の入力
-      await page
-        .locator("#recording_type_code_2")
-        .selectOption({ label: "退勤" });
-      await page.fill(
-        "#recording_timestamp_time_2",
-        attendance[property].endTime
-      );
+      await kotPage.inputEndWorkTime(attendance[property].endTime);
 
       // 休憩開始時刻の入力
-      await page
-        .locator("#recording_type_code_3")
-        .selectOption({ label: "休憩開始" });
-      await page.fill("#recording_timestamp_time_3", "1200");
+      await kotPage.inputStartRestTime();
 
       // 休憩終了時刻の入力
-      await page
-        .locator("#recording_type_code_4")
-        .selectOption({ label: "休憩終了" });
-      await page.fill("#recording_timestamp_time_4", "1300");
+      await kotPage.inputEndResetTime();
 
       // 打刻登録ボタンをクリック
-      await page.click("#button_01 >> nth=1");
+      await kotPage.clickRecordingRegister();
     }
   }
 
   await page.screenshot({ path: `result.png`, fullPage: true });
-
   await browser.close();
 }
