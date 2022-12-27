@@ -39,14 +39,13 @@ SESエンジニアにとってはよくある<br>
 
 # Demo
 
-[Demonstration video](https://user-images.githubusercontent.com/30143121/209460736-1133db27-6d16-454b-ab06-88582105efb3.mp4
-)
+[Demonstration video](https://user-images.githubusercontent.com/30143121/209460736-1133db27-6d16-454b-ab06-88582105efb3.mp4)
 
 # Requirement
 
-▶︎　Node.js<br>
-▶︎　Playwright<br>
-▶︎　Mocha<br>
+```txt
+▶︎　Node.js v16.16.0
+```
 
 # Setup
 
@@ -58,6 +57,7 @@ The following procedure summarizes the preparations and preparations in advance<
 
 ``` bash
 npm install
+npx playwright install chromium
 ```
 
 3. Create a `.env` file with the information necessary for your login with 'KING OF TIME' and set environment variables
@@ -69,7 +69,7 @@ npm install
 4. Output the separately managed attendance management file (a file containing attendance hours etc. outside the company) in CSV format <br>
    *If the format of your attendance report and the format do not match, there are examples on the `Wiki` tab in this GitHub, so please use that.
 
-5. If you can match the format, change the CSV file name to `sample.csv`
+5. If you can match the format, change the CSV file name to `input.csv`
 
 6. Place the CSV file of 5. directly under the cloned PJ (directly under the `kot_auto_input` directory)
 
@@ -85,6 +85,7 @@ Now that the preparations have been completed, please proceed with the `Usage` i
 
 ```bash
 npm install
+npx playwright install chromium
 ```
 
 3. 'KING OF TIME'でご自身のログインに必要な情報を `.env` ファイルを作成後、環境変数を設定します
@@ -96,7 +97,7 @@ npm install
 4. 別で管理している勤怠管理のファイル(自社以外で出勤時間などを記入しているファイル)をCSV形式で出力します <br>
   ※もし、お手持ちの勤怠報告書とフォーマットが大きくずれて合わない場合には、このGitHub内の`Wiki`タブに例を載せていますのでそちらをご使用ください
 
-5. フォーマットを合わせることができましたら、CSVのファイル名を `sample.csv` に変更してください
+5. フォーマットを合わせることができましたら、CSVのファイル名を `input.csv` に変更してください
 
 6. 5.のCSVファイルをクローンしたPJ直下(`kot_auto_input`ディレクトリ直下)に配置してください
 
