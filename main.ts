@@ -37,9 +37,10 @@ async function main() {
       jstDate.getMonth() + 1,
       0
     ).getDate();
-    const forametedAttendance = csvParse("sample.csv", lastDate);
+    const formattedAttendance = csvParse("input.csv", lastDate);
+    // console.log(formattedAttendance);
 
-    await AutoBrowserOperation(forametedAttendance, envVar);
+    await AutoBrowserOperation(formattedAttendance, envVar);
   } catch (error) {
     console.log(`エラー発生 ${error}`);
     process.exit(1);
